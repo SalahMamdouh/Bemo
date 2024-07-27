@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: "Bemo",
       initialRoute: '/onboarding',
       routes: {
-        '/onboarding': (context) => const Root(),
+        '/onboarding': (context) => Root(),
       },
     );
   }
