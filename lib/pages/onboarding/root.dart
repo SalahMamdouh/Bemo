@@ -1,4 +1,8 @@
+import 'package:bemo/components/custom_btn.dart';
 import 'package:bemo/modules/onboarding_controller.dart';
+import 'package:bemo/pages/onboarding/onboarding_1.dart';
+import 'package:bemo/pages/onboarding/onboarding_2.dart';
+import 'package:bemo/pages/onboarding/onboarding_3.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,42 +79,15 @@ class Root extends StatelessWidget {
                     child: PageView(
                       controller: _pageController,
                       physics: const NeverScrollableScrollPhysics(),
-                      children: [
+                      children: const [
                         // lists
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // image
-                            Image.asset('assets/images/create_list.png'),
-
-                            // description
-                            const Text('Add Lists'),
-                          ],
-                        ),
+                        Onboarding1(),
 
                         // location
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // image
-                            Image.asset('assets/images/set_location.png'),
-
-                            // description
-                            const Text('Add Places'),
-                          ],
-                        ),
+                        Onboarding2(),
 
                         // notify
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // image
-                            Image.asset('assets/images/get_notified.png'),
-
-                            // description
-                            const Text('Get Notified'),
-                          ],
-                        ),
+                        Onboarding3(),
                       ],
                     ),
                   ),
@@ -119,14 +96,14 @@ class Root extends StatelessWidget {
                   Column(
                     children: [
                       // next btn
-                      GestureDetector(
+                      CustomBtn(
                         onTap: () {
                           Provider.of<IndicatorModel>(
                                     context,
                                     listen: false,
                                   ).count ==
                                   2
-                              ? null
+                              ? Navigator.pushNamedAndRemoveUntil(context, '/home', (route)=> false,)
                               : _pageController.nextPage(
                                   duration: const Duration(milliseconds: 200),
                                   curve: Curves.easeIn,
@@ -136,32 +113,19 @@ class Root extends StatelessWidget {
                             listen: false,
                           ).increment();
                         },
-                        child: Container(
-                          width: double.infinity,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                            child: Text(
-                              context.watch<IndicatorModel>().count == 2
-                                  ? 'Get Started'
-                                  : 'Next',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
+                        txt: context.watch<IndicatorModel>().count == 2
+                            ? 'Get Started'
+                            : 'Next',
+                        color: Colors.white,
+                        size: 20,
+                        bold: true,
+                        withBackground: true,
                       ),
 
                       const SizedBox(height: 20),
 
                       // skip btn
-                      GestureDetector(
+                      CustomBtn(
                         onTap: () {
                           Provider.of<IndicatorModel>(
                                     context,
@@ -179,16 +143,13 @@ class Root extends StatelessWidget {
                             listen: false,
                           ).increment();
                         },
-                        child: Text(
-                          context.watch<IndicatorModel>().count == 2
-                              ? ''
-                              : 'Skip',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        txt: context.watch<IndicatorModel>().count == 2
+                            ? ''
+                            : 'Skip',
+                        color: Colors.black,
+                        size: 18,
+                        bold: true,
+                        withBackground: false,
                       ),
                     ],
                   ),
