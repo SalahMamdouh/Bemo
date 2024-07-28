@@ -1,3 +1,4 @@
+import 'package:bemo/pages/home.dart';
 import 'package:bemo/pages/onboarding/root.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/onboarding',
       routes: {
         '/onboarding': (context) => Root(),
+        '/home': (context) => const Home(),
       },
     );
   }
