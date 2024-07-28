@@ -1,4 +1,6 @@
+import 'package:bemo/modules/onboarding_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Root extends StatelessWidget {
   Root({super.key});
@@ -7,159 +9,195 @@ class Root extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-        ),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.green.withOpacity(0.9),
-              Colors.green.withOpacity(0.6),
-              Colors.green.withOpacity(0.3),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // indicators
-              Row(
+    return ChangeNotifierProvider(
+      create: (context) => IndicatorModel(),
+      builder: (context, child) {
+        return Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            color: const Color.fromRGBO(255, 223, 214, 0.7),
+            child: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // create lists
-                  Expanded(
-                    child: Container(
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(50),
+                  // indicators
+                  Row(
+                    children: [
+                      // create lists
+                      Expanded(
+                        child: Container(
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
                       ),
+
+                      const SizedBox(width: 10),
+
+                      // link location
+                      Expanded(
+                        child: Container(
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: context.watch<IndicatorModel>().count >= 1
+                                ? Colors.black
+                                : Colors.white70,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(width: 10),
+
+                      // get notified
+                      Expanded(
+                        child: Container(
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: context.watch<IndicatorModel>().count >= 2
+                                ? Colors.black
+                                : Colors.white70,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // image & description
+                  Expanded(
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        // lists
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // image
+                            Image.asset('assets/images/create_list.png'),
+
+                            // description
+                            const Text('Add Lists'),
+                          ],
+                        ),
+
+                        // location
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // image
+                            Image.asset('assets/images/set_location.png'),
+
+                            // description
+                            const Text('Add Places'),
+                          ],
+                        ),
+
+                        // notify
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // image
+                            Image.asset('assets/images/get_notified.png'),
+
+                            // description
+                            const Text('Get Notified'),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
 
-                  const SizedBox(width: 10),
-
-                  // link location
-                  Expanded(
-                    child: Container(
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        borderRadius: BorderRadius.circular(50),
+                  // btns
+                  Column(
+                    children: [
+                      // next btn
+                      GestureDetector(
+                        onTap: () {
+                          Provider.of<IndicatorModel>(
+                                    context,
+                                    listen: false,
+                                  ).count ==
+                                  2
+                              ? null
+                              : _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeIn,
+                                );
+                          Provider.of<IndicatorModel>(
+                            context,
+                            listen: false,
+                          ).increment();
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                            child: Text(
+                              context.watch<IndicatorModel>().count == 2
+                                  ? 'Get Started'
+                                  : 'Next',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
 
-                  const SizedBox(width: 10),
+                      const SizedBox(height: 20),
 
-                  // get notified
-                  Expanded(
-                    child: Container(
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.white70,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              // image & description
-              Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  onPageChanged: (value) {},
-                  children: const [
-                    // lists
-                    Column(
-                      children: [
-                        // image
-                        // description
-                        Text('Add Lists'),
-                      ],
-                    ),
-
-                    // location
-                    Column(
-                      children: [
-                        // image
-                        // description
-                        Text('Add Places'),
-                      ],
-                    ),
-
-                    // notify
-                    Column(
-                      children: [
-                        // image
-                        // description
-                        Text('Get Notified'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              // btns
-              Column(
-                children: [
-                  // continue btn
-                  GestureDetector(
-                    onTap: () {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
-                      );
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Center(
+                      // skip btn
+                      GestureDetector(
+                        onTap: () {
+                          Provider.of<IndicatorModel>(
+                                    context,
+                                    listen: false,
+                                  ).count ==
+                                  2
+                              ? null
+                              : _pageController.jumpToPage(2);
+                          Provider.of<IndicatorModel>(
+                            context,
+                            listen: false,
+                          ).increment();
+                          Provider.of<IndicatorModel>(
+                            context,
+                            listen: false,
+                          ).increment();
+                        },
                         child: Text(
-                          'Next',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
+                          context.watch<IndicatorModel>().count == 2
+                              ? ''
+                              : 'Skip',
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // skip btn
-                  GestureDetector(
-                    onTap: () {
-                      _pageController.jumpToPage(2);
-                    },
-                    child: const Text(
-                      'Skip',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
