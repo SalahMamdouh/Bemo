@@ -14,6 +14,8 @@ class Onboarding2 extends StatelessWidget {
           txt: 'Set Locations & Connect Lists',
           color: Colors.black,
           size: 18,
+          font: true,
+          logo: false,
           bold: true,
         ),
         const SizedBox(height: 10),
@@ -21,6 +23,8 @@ class Onboarding2 extends StatelessWidget {
           txt: "Link your lists to specific locations. Whether it's a store, office, or any place.",
           color: Colors.black,
           size: 16,
+          font: true,
+          logo: false,
           bold: false,
         ),
 

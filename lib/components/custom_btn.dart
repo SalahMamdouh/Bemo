@@ -35,6 +35,8 @@ class CustomBtn extends StatelessWidget {
             txt: txt,
             color: color,
             size: size,
+            font: true,
+            logo: false,
             bold: bold,
           ),
         ),
