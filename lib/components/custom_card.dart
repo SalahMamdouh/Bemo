@@ -38,7 +38,7 @@ class CustomCard extends StatelessWidget {
             // target location
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 7),
+              padding: const EdgeInsets.symmetric(vertical: 5),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -49,7 +49,7 @@ class CustomCard extends StatelessWidget {
               child: CustomTxt(
                 txt: txt,
                 color: Colors.black,
-                size: 18,
+                size: 16,
                 font: true,
                 logo: false,
                 bold: false,
