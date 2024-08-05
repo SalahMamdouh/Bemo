@@ -1,7 +1,7 @@
 import 'package:bemo/components/custom_card.dart';
 import 'package:bemo/components/custom_icon_btn.dart';
 import 'package:bemo/components/custom_txt.dart';
-import 'package:bemo/modules/home_controller.dart';
+import 'package:bemo/modules/list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeController(),
+      create: (context) => ListController(),
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
