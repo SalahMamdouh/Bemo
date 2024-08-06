@@ -1,4 +1,4 @@
-# Bemo v1.7.3-alpha
+# Bemo v1.7.7-alpha
 Your smart reminder
 
 ## Bemo helps you
