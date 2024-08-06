@@ -1,4 +1,4 @@
-# Bemo v1.7.7-alpha
+# Bemo v1.9.10-alpha
 Your smart reminder
 
 ## Bemo helps you
@@ -10,5 +10,4 @@ Your smart reminder
 - Locations are approximate and not 100% accurate
 
 ## Latest Update
-- Lists now are visible & clear
-- Add list page is under-development
+- Adding lists page structure is more clear now & will be more stable in a few days
