@@ -1,12 +1,16 @@
 import 'package:bemo/components/custom_btn.dart';
 import 'package:bemo/components/custom_txt.dart';
-import 'package:bemo/components/custom_type_card.dart';
 import 'package:bemo/modules/list_controller.dart';
+import 'package:bemo/pages/add_list/info.dart';
+import 'package:bemo/pages/add_list/list_content.dart';
+import 'package:bemo/pages/add_list/locations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddList extends StatelessWidget {
-  const AddList({super.key});
+  AddList({super.key});
+
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +19,12 @@ class AddList extends StatelessWidget {
       builder: (context, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const CustomTxt(
-              txt: 'List type',
+            title: CustomTxt(
+              txt: context.watch<ListController>().page == 0
+                  ? 'Info'
+                  : context.watch<ListController>().page == 1
+                      ? 'Data'
+                      : 'Locations',
               color: Colors.black,
               size: 22,
               font: true,
@@ -49,12 +57,14 @@ class AddList extends StatelessWidget {
 
                       const SizedBox(width: 10),
 
-                      // list
+                      // data
                       Expanded(
                         child: Container(
                           height: 5,
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.3),
+                            color: context.watch<ListController>().page >= 1
+                                ? Colors.black
+                                : Colors.grey.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(50),
                           ),
                         ),
@@ -67,7 +77,9 @@ class AddList extends StatelessWidget {
                         child: Container(
                           height: 5,
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.3),
+                            color: context.watch<ListController>().page >= 2
+                                ? Colors.black
+                                : Colors.grey.withOpacity(0.3),
                             borderRadius: BorderRadius.circular(50),
                           ),
                         ),
@@ -76,128 +88,70 @@ class AddList extends StatelessWidget {
                   ),
 
                   // content
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // selected icon
-                      Card(
-                        shape: ShapeBorder.lerp(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          const RoundedRectangleBorder(),
-                          0,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: context.watch<ListController>().type == 0
-                              ? Image.asset(
-                                  'assets/icons/daily_use.png',
-                                  width: 100,
-                                  height: 100,
-                                )
-                              : context.watch<ListController>().type == 1
-                                  ? Image.asset(
-                                      'assets/icons/work.png',
-                                      width: 100,
-                                      height: 100,
-                                    )
-                                  : context.watch<ListController>().type == 2
-                                      ? Image.asset(
-                                          'assets/icons/school.png',
-                                          width: 100,
-                                          height: 100,
-                                        )
-                                      : context.watch<ListController>().type ==
-                                              3
-                                          ? Image.asset(
-                                              'assets/icons/trip.png',
-                                              width: 100,
-                                              height: 100,
-                                            )
-                                          : const Icon(
-                                              Icons.question_mark_outlined,
-                                              size: 100,
-                                            ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // types
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // custom
-                          CustomTypeCard(
-                            onTap: () {
-                              Provider.of<ListController>(
-                                context,
-                                listen: false,
-                              ).setType(0);
-                            },
-                            img: 'assets/icons/daily_use.png',
-                          ),
-
-                          // work
-                          CustomTypeCard(
-                            onTap: () {
-                              Provider.of<ListController>(
-                                context,
-                                listen: false,
-                              ).setType(1);
-                            },
-                            img: 'assets/icons/work.png',
-                          ),
-
-                          // school
-                          CustomTypeCard(
-                            onTap: () {
-                              Provider.of<ListController>(
-                                context,
-                                listen: false,
-                              ).setType(2);
-                            },
-                            img: 'assets/icons/school.png',
-                          ),
-
-                          // trip
-                          CustomTypeCard(
-                            onTap: () {
-                              Provider.of<ListController>(
-                                context,
-                                listen: false,
-                              ).setType(3);
-                            },
-                            img: 'assets/icons/trip.png',
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // name field
-                      TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'List Name',
-                        ),
-                      ),
+                  PageView(
+                    controller: _pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: const [
+                      Info(),
+                      ListContent(),
+                      Locations(),
                     ],
                   ),
 
-                  // add btn
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: CustomBtn(
-                      onTap: () {},
-                      txt: 'Next',
-                      color: Colors.white,
-                      size: 18,
-                      bold: true,
-                      withBackground: true,
-                    ),
+                  // btns
+                  Row(
+                    children: [
+                      // back btn
+                      context.watch<ListController>().page >= 1
+                          ? Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: CustomBtn(
+                                  onTap: () {
+                                    _pageController.previousPage(
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      curve: Curves.easeIn,
+                                    );
+                                    Provider.of<ListController>(
+                                      context,
+                                      listen: false,
+                                    ).previousIndicator();
+                                  },
+                                  txt: 'Back',
+                                  color: Colors.black,
+                                  size: 18,
+                                  bold: true,
+                                  withBackground: false,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+
+                      // next btn
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: CustomBtn(
+                            onTap: () {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 200),
+                                curve: Curves.easeIn,
+                              );
+                              Provider.of<ListController>(
+                                context,
+                                listen: false,
+                              ).nextIndicator();
+                            },
+                            txt: context.watch<ListController>().page == 2? 'Done' : 'Next',
+                            color: Colors.white,
+                            size: 18,
+                            bold: true,
+                            withBackground: true,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
