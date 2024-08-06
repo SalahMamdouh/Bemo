@@ -1,5 +1,5 @@
 import 'package:bemo/pages/account.dart';
-import 'package:bemo/pages/add_list.dart';
+import 'package:bemo/pages/add_list/root.dart';
 import 'package:bemo/pages/home.dart';
 import 'package:bemo/pages/onboarding/root.dart';
 import 'package:flutter/material.dart';
